@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template
 
-medrecords = Blueprint('medrecords', __name__)
+prescriptions = Blueprint('prescriptions', __name__)
 
-@medrecords.route('/')
+@prescriptions.route('/')
 def index():
-    return "Welcome to MedRecords"
+    return "Welcome to the E-Prescripting System"
 

@@ -6,11 +6,11 @@ def create_app():
     from .services.medrecords.views import medrecords
     from .services.fincare.views import fincare
     from .services.careconnect.views import careconnect
-    # Import other Blueprints
+    from .services.prescriptions.views import prescriptions
 
     app.register_blueprint(medrecords, url_prefix='/medrecords')
     app.register_blueprint(fincare, url_prefix='/fincare')
     app.register_blueprint(careconnect, url_prefix='/careconnect')
-    # Register other Blueprints
+    app.register_blueprint(prescriptions, url_prefix='/prescriptions')
 
     return app

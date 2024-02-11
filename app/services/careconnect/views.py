@@ -1,8 +1,8 @@
 from flask import Blueprint, render_template
 
-medrecords = Blueprint('medrecords', __name__)
+careconnect = Blueprint('careconnect', __name__)
 
-@medrecords.route('/')
+@careconnect.route('/')
 def index():
-    return "Welcome to MedRecords"
+    return "Welcome to CareConnect"
 
