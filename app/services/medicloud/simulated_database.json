@@ -1,0 +1,87 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "name": "John Smith",
+            "username": "user1",
+            "password_hash": "hash1",
+            "role": "doctor"
+        },
+        {
+            "id": 2,
+            "name": "Ada Lovelace",
+            "username": "user2",
+            "password_hash": "hash2",
+            "role": "patient"
+        },
+        {
+            "id": 3,
+            "name": "Jeremy Biggles",
+            "username": "user3",
+            "password_hash": "hash3",
+            "role": "patient"
+        },
+        {
+            "id": 4,
+            "name": "Bob Adams",
+            "username": "user4",
+            "password_hash": "hash3",
+            "role": "finance"
+        },
+        {
+            "id": 5,
+            "name": "Jack Sparrow",
+            "username": "user5",
+            "password_hash": "hash3",
+            "role": "admin"
+        },
+        {
+            "id": 6,
+            "name": "Gary Research",
+            "username": "user6",
+            "password_hash": "hash5",
+            "role": "researcher"
+        },
+
+    ],
+    "financial_transactions": [
+        {
+            "id": 1,
+            "sender": "Ada Lovelace",
+            "recipient": "clinic",
+            "amount": "100"
+        },
+        {
+            "id": 2,
+            "sender": "Ada Lovelace",
+            "recipient": "clinic",
+            "amount": "150"
+        }
+    ],
+    "prescriptions": [
+        {
+            "id": 1,
+            "patient_name": "Ada Lovelace",
+            "doctor_name": "John Smith",
+            "medicine": "Medicine A"
+        },
+        {
+            "id": 2,
+            "patient_name": "Ada Lovelace",
+            "doctor_name": "John Smith",
+            "medicine": "Medicine B"
+        }
+    ],
+    "health_records": [
+        {
+            "id": 1,
+            "patient_name": "Ada Lovelace",
+            "date_of_birth": "1990-01-01"
+        },
+        {
+            "id": 2,
+            "patient_name": "Jeremy Biggles",
+            "date_of_birth": "2000-12-23"
+        }
+    ]
+}
