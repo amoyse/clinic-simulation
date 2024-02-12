@@ -40,6 +40,5 @@
         "username": "user6",
         "password_hash": "hash5",
         "role": "researcher"
-    },
-
-],
+    }
+]

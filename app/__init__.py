@@ -6,10 +6,16 @@ class Config:
     SQLALCHEMY_DATABASE_URI = 'sqlite:///database.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
+
 def create_app():
     app = Flask(__name__)
 
     app.config['JWT_SECRET_KEY'] = 'super-secret-jwt-key-yay'
+
+    app.config['JWT_TOKEN_LOCATION'] = ['cookies']
+    app.config['JWT_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+    app.config['JWT_COOKIE_CSRF_PROTECT'] = True  # CSRF protection
+
     jwt = JWTManager(app)
 
     from .services.medrecords.views import medrecords

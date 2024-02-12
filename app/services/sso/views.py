@@ -7,13 +7,19 @@ sso = Blueprint('sso', __name__)
 
 # Load users from the JSON "database"
 def load_users():
-    with open('app/services/medicloud/users.json') as f:
-        return json.load(f)
+    try:
+        with open('app/services/medicloud/users.json', 'r') as f:
+            users = json.load(f)
+        print(users)
+        return users
+    except json.JSONDecodeError as e:
+        print(f"JSON decode error: {e}")
+
 
 # Verify credentials
 def verify_credentials(username, password):
     users = load_users()
-    user = next((u for u in users if u['username'] == username and u['password'] == password), None)
+    user = next((u for u in users if u['username'] == username and u['password_hash'] == password), None)
     return user is not None
 
 
@@ -22,6 +28,7 @@ def verify_credentials(username, password):
 def login():
     username = request.form['username']
     password = request.form['password']
+    print(username, password)
     redirect_back_to = request.form.get('redirect_back_to')
 
     if verify_credentials(username, password):
