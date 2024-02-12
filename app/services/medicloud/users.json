@@ -1,0 +1,45 @@
+[
+    {
+        "id": 1,
+        "name": "John Smith",
+        "username": "user1",
+        "password_hash": "hash1",
+        "role": "doctor"
+    },
+    {
+        "id": 2,
+        "name": "Ada Lovelace",
+        "username": "user2",
+        "password_hash": "hash2",
+        "role": "patient"
+    },
+    {
+        "id": 3,
+        "name": "Jeremy Biggles",
+        "username": "user3",
+        "password_hash": "hash3",
+        "role": "patient"
+    },
+    {
+        "id": 4,
+        "name": "Bob Adams",
+        "username": "user4",
+        "password_hash": "hash3",
+        "role": "finance"
+    },
+    {
+        "id": 5,
+        "name": "Jack Sparrow",
+        "username": "user5",
+        "password_hash": "hash3",
+        "role": "admin"
+    },
+    {
+        "id": 6,
+        "name": "Gary Research",
+        "username": "user6",
+        "password_hash": "hash5",
+        "role": "researcher"
+    },
+
+],

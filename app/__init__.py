@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_jwt_extended import JWTManager
 
 
 class Config:
@@ -7,6 +8,9 @@ class Config:
 
 def create_app():
     app = Flask(__name__)
+
+    app.config['JWT_SECRET_KEY'] = 'super-secret-jwt-key-yay'
+    jwt = JWTManager(app)
 
     from .services.medrecords.views import medrecords
     from .services.fincare.views import fincare
