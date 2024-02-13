@@ -4,6 +4,8 @@ from dotenv import load_dotenv
 import cryptography
 from cryptography.fernet import Fernet
 import os
+import json
+from app.utils import save_json
 
 load_dotenv()  # Load .env file
 
@@ -40,6 +42,13 @@ def create_app():
         current_user = get_jwt_identity()
         return render_template('home.html', current_user=current_user)
     
+
+    # Method used for encrypting the database when first creating app
+    def encrypt_json_data():
+        with open('app/services/medicloud/simulated_database.json', 'r') as f:
+            data = json.load(f)
+        save_json(data, 'app/services/medicloud/simulated_database.json')
+
 
 
     @jwt.unauthorized_loader
