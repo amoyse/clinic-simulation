@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, request, render_template, redirect, url_for, session, make_response
-from flask_jwt_extended import create_access_token, set_access_cookies
+from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
 
 sso = Blueprint('sso', __name__)
 
@@ -10,7 +10,6 @@ def load_users():
     try:
         with open('app/services/medicloud/users.json', 'r') as f:
             users = json.load(f)
-        print(users)
         return users
     except json.JSONDecodeError as e:
         print(f"JSON decode error: {e}")
@@ -28,11 +27,10 @@ def verify_credentials(username, password):
 def login():
     username = request.form['username']
     password = request.form['password']
-    print(username, password)
     redirect_back_to = request.form.get('redirect_back_to')
 
     if verify_credentials(username, password):
-        response = make_response(redirect(redirect_back_to))
+        response = make_response(redirect(url_for("home")))
         response.set_cookie('auth_cookie', username)
 
         access_token = create_access_token(identity=username)
@@ -54,8 +52,19 @@ def check_auth():
             access_token = create_access_token(identity=request.cookies['auth_cookie'])
             set_access_cookies(response, access_token)  # Set JWT in cookies
             return response
-        return "User already authenticated", 200
+        response = make_response(redirect("/"))
+        access_token = create_access_token(identity=request.cookies['auth_cookie'])
+        set_access_cookies(response, access_token)  # Set JWT in cookies
+        return response
     else:
         return render_template('login.html', redirect_back_to=service_redirect_url)
 
+
+@sso.route('/logout')
+def logout():
+    response = make_response(redirect("/"))
+    # Clear JWT cookies
+    unset_jwt_cookies(response)
+    response.set_cookie('auth_cookie', '', expires=0)
+    return response
 

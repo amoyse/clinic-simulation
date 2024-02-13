@@ -4,9 +4,11 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 fincare = Blueprint('fincare', __name__)
 
 @fincare.route('/')
-@jwt_required(optional=True)
+@jwt_required()
 def index():
-    if not get_jwt_identity():
+    current_user = get_jwt_identity()
+    print(current_user)
+    if not current_user:
         return redirect(url_for('sso.check_auth', redirect_back_to=request.url))
-    return "Welcome to FinCare"
+    return render_template("fincare.html")
 

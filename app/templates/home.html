@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>St. John's Clinic</title>
+    </head>
+
+    <body>
+        <h1>Welcome to St. John's Clinic</h1>
+        {% if current_user %}
+            <a href="{{ url_for('sso.logout') }}" class="btn">Logout</a>
+        {% else %}
+          <a href="{{ url_for('sso.check_auth') }}" class="btn">Login</a>
+        {% endif %}
+    </body>
+</html>
+
