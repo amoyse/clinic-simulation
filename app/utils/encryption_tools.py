@@ -3,6 +3,9 @@ import os
 import base64
 from cryptography.fernet import Fernet
 from dotenv import load_dotenv
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import padding
+
 
 # Initialize environment variables
 load_dotenv()
@@ -30,7 +33,34 @@ def load_json(filename):
     decrypted_data = decrypt_data(encrypted_data)
     return json.loads(decrypted_data)
 
+
 def save_json(data, filename):
     encrypted_data = encrypt_data(json.dumps(data))
     with open(filename, 'wb') as file:
         file.write(encrypted_data)
+
+
+
+
+def encrypt_with_public_key(public_key, message):
+    encrypted = public_key.encrypt(
+        message,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    return encrypted
+
+
+def decrypt_with_private_key(private_key, encrypted_message):
+    original_message = private_key.decrypt(
+        encrypted_message,
+        padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        )
+    )
+    return original_message
