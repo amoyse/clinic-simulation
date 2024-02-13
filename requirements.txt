@@ -4,3 +4,4 @@ Flask-JWT-Extended
 cryptography
 flask-talisman
 flask-dotenv
+cryptography
