@@ -1,6 +1,7 @@
 import json
 from flask import Blueprint, request, render_template, redirect, url_for, session, make_response
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
+import bcrypt
 
 sso = Blueprint('sso', __name__)
 
@@ -15,11 +16,27 @@ def load_users():
         print(f"JSON decode error: {e}")
 
 
+# Dummy register function
+def create_new_user(name, username, password, role):
+    salt = bcrypt.gensalt()
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+
+    # This calls an undefined function, to store the hashed password and other details in the
+    # database. As this is a simulation, I have not implemented new user registration
+    # but have taken the result from the hash, and stored it manually
+    store_in_database(name, username, hashed_password.decode('utf-8'), role)
+
+
+
 # Verify credentials
 def verify_credentials(username, password):
     users = load_users()
-    user = next((u for u in users if u['username'] == username and u['password_hash'] == password), None)
-    return user is not None
+    user = next((u for u in users if u['username'] == username), None)
+    if user is not None:
+        stored_hash = user['password_hash'].encode('utf-8')
+        return bcrypt.checkpw(password.encode('utf-8'), stored_hash)
+    return False
+
 
 
 # Handle what happens when login form is submitted
@@ -27,7 +44,6 @@ def verify_credentials(username, password):
 def login():
     username = request.form['username']
     password = request.form['password']
-    redirect_back_to = request.form.get('redirect_back_to')
 
     if verify_credentials(username, password):
         response = make_response(redirect(url_for("home")))
@@ -44,13 +60,6 @@ def login():
 @sso.route('/check-auth')
 def check_auth():
     if 'auth_cookie' in request.cookies:
-
-        # User already logged in, generate token and redirect back to service
-        if service_redirect_url:
-            response = make_response(redirect(url_for("home")))
-            access_token = create_access_token(identity=request.cookies['auth_cookie'])
-            set_access_cookies(response, access_token)  # Set JWT in cookies
-            return response
         response = make_response(redirect("/"))
         access_token = create_access_token(identity=request.cookies['auth_cookie'])
         set_access_cookies(response, access_token)  # Set JWT in cookies
