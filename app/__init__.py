@@ -1,8 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_jwt_extended import JWTManager, get_jwt_identity, jwt_required
 from dotenv import load_dotenv
-import cryptography
-from cryptography.fernet import Fernet
+from flask_talisman import Talisman
 import os
 import json
 from app.utils import save_json
@@ -20,6 +19,7 @@ def create_app():
     app.config['JWT_COOKIE_CSRF_PROTECT'] = True
 
     jwt = JWTManager(app)
+    Talisman(app)
 
     from .services.medrecords.views import medrecords
     from .services.fincare.views import fincare
