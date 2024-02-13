@@ -2,15 +2,25 @@ import json
 from flask import Blueprint, request, render_template, redirect, url_for, session, make_response
 from flask_jwt_extended import create_access_token, set_access_cookies, unset_jwt_cookies
 import bcrypt
+from app.utils import load_json, save_json
+
 
 sso = Blueprint('sso', __name__)
+
+
+# Used for creating the encrypted users database file simulation
+def encrypt_json_data():
+    with open('app/services/medicloud/users.json', 'r') as f:
+        users = json.load(f)
+    save_json(users, 'app/services/medicloud/users.json')
+    
+
 
 
 # Load users from the JSON "database"
 def load_users():
     try:
-        with open('app/services/medicloud/users.json', 'r') as f:
-            users = json.load(f)
+        users = load_json("app/services/medicloud/users.json")
         return users
     except json.JSONDecodeError as e:
         print(f"JSON decode error: {e}")
