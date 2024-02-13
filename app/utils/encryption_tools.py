@@ -5,6 +5,9 @@ from cryptography.fernet import Fernet
 from dotenv import load_dotenv
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives.asymmetric import rsa
 
 
 # Initialize environment variables
@@ -39,6 +42,24 @@ def save_json(data, filename):
     with open(filename, 'wb') as file:
         file.write(encrypted_data)
 
+
+def load_public_key(path_to_public_key):
+    with open(path_to_public_key, "rb") as key_file:
+        public_key = serialization.load_pem_public_key(
+            key_file.read(),
+            backend=default_backend()
+        )
+    return public_key
+
+
+def load_private_key(path_to_private_key, password=None):
+    with open(path_to_private_key, "rb") as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=password.encode() if password else None,
+            backend=default_backend()
+        )
+    return private_key
 
 
 
