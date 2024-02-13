@@ -43,12 +43,11 @@ def login():
 # Handle redirect to SSO provider
 @sso.route('/check-auth')
 def check_auth():
-    service_redirect_url = request.args.get('redirect_back_to', None)
     if 'auth_cookie' in request.cookies:
 
         # User already logged in, generate token and redirect back to service
         if service_redirect_url:
-            response = make_response(redirect(service_redirect_url))
+            response = make_response(redirect(url_for("home")))
             access_token = create_access_token(identity=request.cookies['auth_cookie'])
             set_access_cookies(response, access_token)  # Set JWT in cookies
             return response
@@ -57,7 +56,7 @@ def check_auth():
         set_access_cookies(response, access_token)  # Set JWT in cookies
         return response
     else:
-        return render_template('login.html', redirect_back_to=service_redirect_url)
+        return render_template('login.html')
 
 
 @sso.route('/logout')

@@ -7,8 +7,7 @@ fincare = Blueprint('fincare', __name__)
 @jwt_required()
 def index():
     current_user = get_jwt_identity()
-    print(current_user)
     if not current_user:
-        return redirect(url_for('sso.check_auth', redirect_back_to=request.url))
+        return redirect(url_for('sso.check_auth'))
     return render_template("fincare.html")
 

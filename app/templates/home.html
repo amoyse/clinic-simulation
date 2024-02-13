@@ -7,6 +7,17 @@
     <body>
         <h1>Welcome to St. John's Clinic</h1>
         {% if current_user %}
+            <a href="{{ url_for('medrecords.index') }}" class="btn">MedRecords</a>
+            <br/><br/>
+            <a href="{{ url_for('careconnect.index') }}" class="btn">CareConnect</a>
+            <br/><br/>
+            <a href="{{ url_for('fincare.index') }}" class="btn">FinCare</a>
+            <br/><br/>
+            <a href="{{ url_for('prescriptions.index') }}" class="btn">Electronic Prescribing System</a>
+            <br/><br/>
+            <a href="{{ url_for('medicloud.index') }}" class="btn">MediCloud File Upload</a>
+            <br/><br/>
+            <br/><br/>
             <a href="{{ url_for('sso.logout') }}" class="btn">Logout</a>
         {% else %}
           <a href="{{ url_for('sso.check_auth') }}" class="btn">Login</a>
