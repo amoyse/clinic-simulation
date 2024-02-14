@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from flask_talisman import Talisman
 import os
 import json
-from app.utils import save_json, decrypt_data
+from app.utils import save_json
 
 load_dotenv()  # Load .env file
 
@@ -39,9 +39,6 @@ def create_app():
     @app.route('/')
     @jwt_required(optional=True)
     def home():
-        # encrypt_json_data()
-        # decrypt_json_data()
-
         current_user = get_jwt_identity()
         return render_template('home.html', current_user=current_user)
     
@@ -51,16 +48,6 @@ def create_app():
         with open('app/services/medicloud/simulated_database.json', 'r') as f:
             data = json.load(f)
         save_json(data, 'app/services/medicloud/simulated_database.json')
-
-
-    def decrypt_json_data():
-        with open('app/services/medicloud/simulated_database.json', 'rb') as f:
-            data = f.read()
-
-        decrypted_data = decrypt_data(data)
-        with open('app/services/medicloud/simulated_database.json', 'w') as file:
-            file.write(decrypted_data)
-
 
 
 

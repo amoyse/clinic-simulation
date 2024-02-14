@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MediCloud</title>
+  </head>
+
+  <body>
+      <h1>Welcome to MediCloud File Upload</h1>
+
+      {% if uploaded %}
+          <div>File uploaded successfully!</div>
+          <br/><br/>
+      {% endif %}
+      <form action="/medicloud/upload" method="post" enctype="multipart/form-data">
+          <input type="file" name="file">
+          <input type="submit" value="Upload">
+      </form>
+
+      {% if user_role == "researcher" %}
+          <br/><br/>
+          <button>Get all research data</button>
+      {% endif %}
+
+      <br/><br/>
+
+      <a href="{{ url_for('sso.logout') }}" class="btn">Logout</a>
+
+      <br/><br/>
+      <div>{{data}}</div>
+  </body>
+</html>

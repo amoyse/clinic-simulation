@@ -15,18 +15,6 @@ python3 run.py
 
 ---
 
-There are currently 6 users set up. Each is called 'user1', 'user2' etc. and the password for each account is currently 'pass'.
-
-#### User Roles
-user1 = doctor
-user2 = patient
-user3 = patient
-user4 = finance
-user5 = admin
-user6 = researcher
-
----
-
 All of the data for the clinic is stored in MediCloud, including user data, and unstructured data contained in the `uploads` folder.
 Authentication works through an SSO system, which queries the encrypted `users.json` file, decrypts it, then checks if the hashed input password matches the stored hash. If so, a JWT token is generated and stored in cookies. This allows the services to query this to see if the user has been authenticated.
 
