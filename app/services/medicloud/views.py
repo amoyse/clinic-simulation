@@ -85,6 +85,8 @@ def upload():
 
 # This method is part of the simulation, and is not actually called in the code
 # Showcases what could happen when files need to be decrypted and viewed
+@medicloud.route('/get-file/<filename>', methods=['GET'])
+@jwt_required()
 def get_file(filename):
     try:
         encrypted_file_path = os.path.join('app/services/medicloud/uploads', filename)
