@@ -44,8 +44,9 @@ def verify_credentials(username, password):
     user = next((u for u in users if u['username'] == username), None)
     if user is not None:
         stored_hash = user['password_hash'].encode('utf-8')
-        return bcrypt.checkpw(password.encode('utf-8'), stored_hash)
-    return False
+        if bcrypt.checkpw(password.encode('utf-8'), stored_hash):
+            return user['role']
+    return ""
 
 
 
@@ -55,11 +56,13 @@ def login():
     username = request.form['username']
     password = request.form['password']
 
-    if verify_credentials(username, password):
+    role = verify_credentials(username, password)
+    if role != "":
         response = make_response(redirect(url_for("home")))
         response.set_cookie('auth_cookie', username)
+        additional_claims = {"role": role}
 
-        access_token = create_access_token(identity=username)
+        access_token = create_access_token(identity=username, additional_claims=additional_claims)
         set_access_cookies(response, access_token)
         return response
     else:

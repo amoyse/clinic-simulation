@@ -1,15 +1,16 @@
 from flask import Blueprint, render_template, request, url_for, redirect, current_app
 from flask_jwt_extended import jwt_required, get_jwt_identity
-import requests
-from app.services.medicloud.views import get_data
 from app.utils.encryption_tools import load_public_key, load_private_key, encrypt_with_public_key, decrypt_with_private_key
+from app.utils.decorators import role_required
 from cryptography.fernet import Fernet
+import requests
 import base64
 
 fincare = Blueprint('fincare', __name__)
 
 @fincare.route('/')
 @jwt_required()
+@role_required(['finance'])
 def index():
     current_user = get_jwt_identity()
     if not current_user:
