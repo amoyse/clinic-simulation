@@ -20,11 +20,14 @@ def get_fernet():
     encryption_key = base64.urlsafe_b64decode(encryption_key_b64)
     return Fernet(encryption_key)
 
-def encrypt_data(data):
+def encrypt_data(data, file=False):
     fernet = get_fernet()
-    return fernet.encrypt(data.encode())
+    if not file:
+        return fernet.encrypt(data.encode())
+    return fernet.encrypt(data)
 
-def decrypt_data(encrypted_data):
+
+def decrypt_data(encrypted_data, file=False):
     fernet = get_fernet()
     return fernet.decrypt(encrypted_data).decode()
 

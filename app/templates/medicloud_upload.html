@@ -16,6 +16,11 @@
           <input type="submit" value="Upload">
       </form>
 
+      {% if user_role == "researcher" %}
+          <br/><br/>
+          <button>Get all research data</button>
+      {% endif %}
+
       <br/><br/>
 
       <a href="{{ url_for('sso.logout') }}" class="btn">Logout</a>
