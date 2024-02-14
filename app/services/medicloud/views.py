@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, url_for, redirect, jsonify
+from flask import Blueprint, render_template, request, url_for, redirect, jsonify, send_file, abort
 from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 from dotenv import load_dotenv
 from app.utils.encryption_tools import load_json, load_public_key, load_private_key, encrypt_with_public_key, decrypt_with_private_key, encrypt_data, decrypt_data
@@ -8,6 +8,7 @@ from werkzeug.utils import secure_filename
 import base64
 import json
 import os
+import io
 
 
 load_dotenv()
@@ -79,5 +80,26 @@ def upload():
 
         return render_template("medicloud_upload.html", uploaded=True, user_role='')
     return jsonify({'error': 'Invalid filetype'}), 400
+
+
+
+# This method is part of the simulation, and is not actually called in the code
+# Showcases what could happen when files need to be decrypted and viewed
+def get_file(filename):
+    try:
+        encrypted_file_path = os.path.join('app/services/medicloud/uploads', filename)
+        
+        with open(encrypted_file_path, 'rb') as encrypted_file:
+            encrypted_data = encrypted_file.read()
+        decrypted_data = decrypt_data(encrypted_data)
+
+        # Create a BytesIO object to hold the decrypted data
+        decrypted_file = io.BytesIO(decrypted_data)
+        decrypted_file.seek(0)
+
+        return send_file(decrypted_file, as_attachment=True, download_name=filename, mimetype='application/octet-stream')
+    except Exception as e:
+        print(e)
+        abort(500)
 
 
