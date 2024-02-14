@@ -19,10 +19,15 @@ There are currently 6 users set up. Each is called 'user1', 'user2' etc. and the
 
 #### User Roles
 user1 = doctor
+
 user2 = patient
+
 user3 = patient
+
 user4 = finance
+
 user5 = admin
+
 user6 = researcher
 
 ---
