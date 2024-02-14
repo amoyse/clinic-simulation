@@ -1,7 +1,10 @@
 
 # Clinic Simulation ISS CW1
 
-This project uses the dependencies listed in the requirements.txt file.
+This project uses the dependencies listed in the requirements.txt file. Which can be installed by running the `config.sh` script:
+```bash
+./config.sh
+```
 
 As it is a simulation, much of the functionality of this application has not been implemented, or has been implemented to the bare minimum to display concepts, not provide the full functionality of the clinic's systems.
 
@@ -12,10 +15,10 @@ python3 run.py
 
 ---
 
-All of the data for the clinic is stored in MediCloud, including user data, and unstructured data contained in the `uploads `folder.
+All of the data for the clinic is stored in MediCloud, including user data, and unstructured data contained in the `uploads` folder.
 Authentication works through an SSO system, which queries the encrypted `users.json` file, decrypts it, then checks if the hashed input password matches the stored hash. If so, a JWT token is generated and stored in cookies. This allows the services to query this to see if the user has been authenticated.
 
-RBAC has been implemented by the custom decorator in the decorators.py file in the `utils `folder.
+RBAC has been implemented by the custom decorator in the decorators.py file in the `utils`folder.
 
 Data requests sent from services to MediCloud are encrypted with AES, with the encryption key encrypted with RSA. For this, each service (including MediCloud) has a public and private key, with the public keys assumed to be shared with each other, stored in the `public_keys` folder. MediCloud then decrypts these requests by decrypting the AES key with the MediCloud private key, then gets the data needed from the encrypted database, and encrypts it with the key and sends it back.
 
