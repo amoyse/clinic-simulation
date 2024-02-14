@@ -2,6 +2,7 @@ from flask import jsonify
 from flask_jwt_extended import verify_jwt_in_request, get_jwt
 from functools import wraps
 
+# Custom decorator created to be able to require roles for certain routes
 def role_required(required_roles):
     def wrapper(fn):
         @wraps(fn)

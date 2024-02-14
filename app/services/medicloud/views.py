@@ -2,8 +2,10 @@ from flask import Blueprint, render_template, request, url_for, redirect, jsonif
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.utils.encryption_tools import load_json, load_public_key, load_private_key, encrypt_with_public_key, decrypt_with_private_key
 from cryptography.fernet import Fernet
+from werkzeug.utils import secure_filename
 import base64
 import json
+import os
 
 medicloud = Blueprint('medicloud', __name__)
 
@@ -13,7 +15,7 @@ def index():
     current_user = get_jwt_identity()
     if not current_user:
         return redirect(url_for('sso.check_auth'))
-    return render_template("medicloud_upload.html")
+    return render_template("medicloud_upload.html", uploaded=False)
 
 
 @medicloud.route('/api/get-data', methods=['POST'])
@@ -44,4 +46,25 @@ def get_data():
     encrypted_response_data_b64 = base64.b64encode(encrypted_response_data).decode('utf-8')
     
     return jsonify({"encrypted_data": encrypted_response_data_b64})
+
+
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@medicloud.route('/upload', methods=['POST'])
+def upload():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file part'}), 400
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join('app/services/medicloud/uploads', filename))
+        return render_template("medicloud_upload.html", uploaded=True)
+    return jsonify({'error': 'Invalid filetype'}), 400
+
 
