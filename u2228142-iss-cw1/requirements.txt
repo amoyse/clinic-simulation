@@ -1,7 +1,0 @@
-Flask
-Flask-JWT-Extended
-cryptography
-flask-talisman
-flask-dotenv
-brcypt
-werkzeug
